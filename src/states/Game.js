@@ -8,6 +8,7 @@ export default class extends Phaser.State {
 
   create () {
     this.physics.startSystem(Phaser.Physics.ARCADE)
+    this.cursors = this.input.keyboard.createCursorKeys()
 
     this.player = new Player({
       game: this,
@@ -19,9 +20,9 @@ export default class extends Phaser.State {
     this.game.add.existing(this.player)
 
     this.game.physics.arcade.enable(this.player)
-    this.player.body.bounce.y = 0.2;
-    this.player.body.gravity.y = 300;
-    this.player.body.collideWorldBounds = true;
+    this.player.body.bounce.y = 0.2
+    this.player.body.gravity.y = 300
+    this.player.body.collideWorldBounds = true
 
     this.platforms = this.add.group()
     this.platforms.enableBody = true
@@ -32,7 +33,19 @@ export default class extends Phaser.State {
   }
 
   update () {
-    this.physics.arcade.collide(this.player, this.platforms);
+    const hitPlatform = this.physics.arcade.collide(this.player, this.platforms)
+
+    this.player.body.velocity.x = 0
+
+    if (this.cursors.left.isDown) {
+      this.player.body.velocity.x = -150
+    } else if (this.cursors.right.isDown) {
+      this.player.body.velocity.x = 150
+    }
+
+    if (this.cursors.up.isDown && this.player.body.touching.down && hitPlatform) {
+      this.player.body.velocity.y = -350
+    }
   }
 
   render () {
