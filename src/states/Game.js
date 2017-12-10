@@ -25,11 +25,11 @@ export default class extends Phaser.State {
 
       this.score = 0
 
-    this.scoreText = this.add.text(16, 16, 'score: ' + this.score, { fontSize: '32px', fill: '#000' });
+    this.scoreText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#000' });
 
 
     this.blocks = this.add.group()
-        this.blocks.enableBody = true
+    this.blocks.enableBody = true
     this.platforms = this.add.group()
     this.platforms.enableBody = true
 
@@ -85,6 +85,14 @@ export default class extends Phaser.State {
     ground2.body.immovable = true
 
     this.game.physics.arcade.enable(this.platforms)
+
+      this.player.events.onOutOfBounds.add(function() {
+          this.score = Math.max((this.score - 250), 0)
+          this.player.reset(this.player.x, 40);
+          this.player.reset(this.player.y, this.world.height - 42);
+          console.log('OOB', this.score)
+      }, this)
+      this.player.checkWorldBounds = true
   }
 
   update () {
@@ -95,9 +103,10 @@ export default class extends Phaser.State {
 
       this.physics.arcade.overlap(this.player, this.blocks, function(player, block) {
           this.score += 10
-          this.scoreText.text = 'score: ' + this.score
           block.kill()
       }.bind(this))
+
+      this.scoreText.text = 'score: ' + this.score
 
     this.player.body.velocity.x = 0
 
