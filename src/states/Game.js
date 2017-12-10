@@ -12,8 +12,8 @@ export default class extends Phaser.State {
 
     this.player = new Player({
       game: this,
-      x: this.world.centerX,
-      y: this.world.centerY,
+      x: 40,
+      y: this.world.height - 42,
       asset: 'mushroom'
     })
 
@@ -76,9 +76,13 @@ export default class extends Phaser.State {
       }, 2000)
 
 
-    var ground = this.platforms.create(this.world.width/4, this.world.height - 13, 'platform')
-    ground.scale.setTo(12, 1)
+    var ground = this.platforms.create(0, this.world.height - 13, 'platform')
+    ground.scale.setTo(5, 1)
     ground.body.immovable = true
+
+    var ground2 = this.platforms.create(860, this.world.height - 13, 'platform')
+    ground2.scale.setTo(5, 1)
+    ground2.body.immovable = true
 
     this.game.physics.arcade.enable(this.platforms)
   }
