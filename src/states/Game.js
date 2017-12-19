@@ -75,6 +75,10 @@ export default class extends Phaser.State {
           moving4.body.velocity.x = 0-moving4.body.velocity.x;
       }, 2000)
 
+      setInterval(function () {
+          this.score -= 1;
+      }.bind(this), 600)
+
 
     var ground = this.platforms.create(0, this.world.height - 13, 'platform')
     ground.scale.setTo(5, 1)
@@ -87,7 +91,7 @@ export default class extends Phaser.State {
     this.game.physics.arcade.enable(this.platforms)
 
       this.player.events.onOutOfBounds.add(function() {
-          this.score = Math.max((this.score - 250), 0)
+          this.score = Math.max((this.score - 500), 0)
           this.player.reset(this.player.x, 40);
           this.player.reset(this.player.y, this.world.height - 42);
           console.log('OOB', this.score)
@@ -105,6 +109,11 @@ export default class extends Phaser.State {
           this.score += 10
           block.kill()
       }.bind(this))
+
+      this.score = Math.max(this.score, 0);
+
+      let scale = Math.max((this.score+20)/80,0.2);
+      this.player.scale.setTo(scale, scale)
 
       this.scoreText.text = 'score: ' + this.score
 
