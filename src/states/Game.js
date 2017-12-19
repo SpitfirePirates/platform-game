@@ -115,14 +115,18 @@ export default class extends Phaser.State {
       let scale = Math.max((this.score+20)/80,0.2);
       this.player.scale.setTo(scale, scale)
 
+      this.player.body.gravity.y = Math.max(600, 600+(this.score*3))
+
       this.scoreText.text = 'score: ' + this.score
 
     this.player.body.velocity.x = 0
 
+      let maxVelocity = Math.max(Math.min(150, 150-(this.score)),100);
+
     if (this.cursors.left.isDown) {
-      this.player.body.velocity.x = -150
+      this.player.body.velocity.x = -maxVelocity
     } else if (this.cursors.right.isDown) {
-      this.player.body.velocity.x = 150
+      this.player.body.velocity.x = maxVelocity
     }
 
     if (this.cursors.up.isDown && this.player.body.touching.down) {
